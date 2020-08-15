@@ -1,0 +1,46 @@
+{% extends "_layout.html" %}
+{% block main_content %}
+<h1>About Lemmatizer</h1>
+<div class="container">
+  <h2>Technical Details</h2>
+  <p>
+    This lemmatizer uses CLTK's BackoffGreekLemmatizer and BackoffLatinLemmatizer for Greek and Latin respectively. It
+    uses CLTK's default models which have been trained with the textual data from the Perseus Latin Dependency
+    Treebanks. Therefore some errors are to be expected when applying this model to koinee Greek. Alternative
+    lemmatizers or retraining with biblical or ancient Christian texts will likely increase accuracy. The web app is
+    implemented using Python and Flask and could be easily implemented as a web service.
+  </p>
+  <p>
+    I have included some Greek and latin text from the Bible for demonstration. Feel free to copy and paste these texts
+    (Greek John 1:1-13 and Latin Ex. to try the lemmatizer.
+  </p>
+  <h2>John 1:1-13</h2>
+  <p>
+    Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος. οὗτος ἦν ἐν ἀρχῇ πρὸς τὸν θεόν. πάντα δι᾿
+    αὐτοῦ ἐγένετο, καὶ χωρὶς αὐτοῦ ἐγένετο οὐδὲ ἕν. ὃ γέγονεν ἐν αὐτῷ ζωὴ ἦν, καὶ ἡ ζωὴ ἦν τὸ φῶς τῶν ἀνθρώπων· καὶ τὸ
+    φῶς ἐν τῇ σκοτίᾳ φαίνει, καὶ ἡ σκοτία αὐτὸ οὐ κατέλαβεν. Ἐγένετο ἄνθρωπος, ἀπεσταλμένος παρὰ θεοῦ, ὄνομα αὐτῷ
+    Ἰωάννης· οὗτος ἦλθεν εἰς μαρτυρίαν ἵνα μαρτυρήσῃ περὶ τοῦ φωτός, ἵνα πάντες πιστεύσωσιν δι᾿ αὐτοῦ. οὐκ ἦν ἐκεῖνος τὸ
+    φῶς, ἀλλ᾿ ἵνα μαρτυρήσῃ περὶ τοῦ φωτός. Ἦν τὸ φῶς τὸ ἀληθινόν, ὃ φωτίζει πάντα ἄνθρωπον, ἐρχόμενον εἰς τὸν κόσμον.
+    ἐν τῷ κόσμῳ ἦν, καὶ ὁ κόσμος δι᾿ αὐτοῦ ἐγένετο, καὶ ὁ κόσμος αὐτὸν οὐκ ἔγνω. εἰς τὰ ἴδια ἦλθεν, καὶ οἱ ἴδιοι αὐτὸν
+    οὐ παρέλαβον. ὅσοι δὲ ἔλαβον αὐτόν, ἔδωκεν αὐτοῖς ἐξουσίαν τέκνα θεοῦ γενέσθαι, τοῖς πιστεύουσιν εἰς τὸ ὄνομα αὐτοῦ,
+    οἳ οὐκ ἐξ αἱμάτων οὐδὲ ἐκ θελήματος σαρκὸς οὐδὲ ἐκ θελήματος ἀνδρὸς ἀλλ᾿ ἐκ θεοῦ ἐγεννήθησαν.
+  </p>
+  <h2>Ex. 1:1-10</h2>
+  <p>
+    in principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et
+    spiritus Dei ferebatur super aquas dixitque Deus fiat lux et facta est lux et vidit Deus lucem quod esset bona et
+    divisit lucem ac tenebras appellavitque lucem diem et tenebras noctem factumque est vespere et mane dies unus dixit
+    quoque Deus fiat firmamentum in medio aquarum et dividat aquas ab aquis et fecit Deus firmamentum divisitque aquas
+    quae erant sub firmamento ab his quae erant super firmamentum et factum est ita vocavitque Deus firmamentum caelum
+    et factum est vespere et mane dies secundus dixit vero Deus congregentur aquae quae sub caelo sunt in locum unum et
+    appareat arida factumque est ita et vocavit Deus aridam terram congregationesque aquarum appellavit maria et vidit
+    Deus quod esset bonum
+  </p>
+  <h2>Errata</h2>
+  <ul>
+    <li>Sometimes the models returns wrong lemma. Additional training may be needed.</li>
+    <li>CSV output seems to work only with Firefox.</li>
+  </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "_layout.html" %}
+{% block main_content %}
+<h1>Classical Language Lemmatizer</h1>
+{% if error %}
+<div class="container" id="error_area">
+Error: {{ error }}
+</div>
+{% endif %}
+<div class="container">
+  <p>This is a small demo of lemmatizing text in ancient Greek or Latin. To try it copy a text in the field below or use the text already there from the beginning of the gospel of John.
+  </p>
+</div>
+
+<div class="container" id="input_area">
+  <form id="data_form" method="post">
+    <div class="row">
+      <textarea id="text_input" name="text_data" rows="15">{% if not 
+        text_data %}Εν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος. οὗτος ἦν ἐν ἀρχῇ πρὸς τὸν θεόν. πάντα δι᾿ αὐτοῦ ἐγένετο, καὶ χωρὶς αὐτοῦ ἐγένετο οὐδὲ ἕν. ὃ γέγονεν ἐν αὐτῷ ζωὴ ἦν, καὶ ἡ ζωὴ ἦν τὸ φῶς τῶν ἀνθρώπων· καὶ τὸ φῶς ἐν τῇ σκοτίᾳ φαίνει, καὶ ἡ σκοτία αὐτὸ οὐ κατέλαβεν.{% endif %}{{ text_data }}</textarea>
+    </div>
+    <div class="row">
+      <div class="col" id="language_input">
+        {% for k, lang_name in languages.items() %}
+        <label for="lang_choice_{{ k }}">
+          <input type="radio" id="lang_choice_{{ k }}" name="language" value="{{ k }}"{% if k == current_language %} checked{% endif %}>
+          {{ lang_name }}</label>
+        {% endfor %}
+      </div>
+      <div class="col">
+        <input type="submit" value="Submit" class="btn btn-primary" id="submit_button" />
+      </div>
+    </div>
+  </form>
+</div>
+{% if lemma %}
+<div class="container" id="result_area">
+  Download 
+  <a href="download/{{ filename_csv }}" target="_blank">CSV</a>
+  <a href="download/{{ filename_json }}" target="_blank">JSON</a>
+  <table>
+    <tr><th>Index</th><th>Word</th><th>Lemma</th></tr>
+  {% for elem in lemma %}
+    <tr><td>{{ elem['index'] }}</td><td>{{ elem['word'] }}</td><td>{{ elem['lemma'] }}</td></tr>
+  {% endfor %}
+  </table>
+</div>
+{% endif %}
+{% endblock %}

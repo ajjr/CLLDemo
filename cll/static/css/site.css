@@ -1,0 +1,48 @@
+@media only screen and (max-width: 320px) {
+  b {
+   font-size: 10px;
+  }
+}
+
+nav {
+    background-color: #000000;
+}
+
+nav a {
+  color: #FFF;
+  padding: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #000000;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+}
+
+textarea {
+  font-family: monospace;
+  width: 100%;
+}
+
+#submit_button {
+  float: right;
+}
+
+.container {
+  max-width: 800px;
+}
