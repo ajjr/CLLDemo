@@ -14,7 +14,7 @@ def tokenize(request):
 
     word_tokenizer = WordTokenizer(language)
     data = word_tokenizer.tokenize(src_data)
-    clean_data = list(map(cltk_normalize, 
+    clean_data = list(map(cltk_normalize,
                           [w for w in data if w.isalpha()]))
     # and not w in STOPS_LIST]
 

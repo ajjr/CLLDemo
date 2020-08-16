@@ -21,8 +21,9 @@ languages = {
 def index_get():
     """Renders lemmatizer without parameters
     """
-    return flask.render_template('index.html', languages=languages,
-                                 current_language=app.config['DEFAULT_LANGUAGE'])
+    return flask.render_template(
+        'index.html', languages=languages,
+        current_language=app.config['DEFAULT_LANGUAGE'])
 
 
 @app.route('/', methods=['POST'])
@@ -34,7 +35,7 @@ def index_post():
     text_data = request.form['text_data']
     language = request.form['language']
 
-    if text_data.strip() == "":
+    if text_data.strip() == "" or len(text_data) > 1000:
         return flask.render_template('index.html', languages=languages)
 
     text_qry = {'Content-Type': "text/plain",
@@ -50,8 +51,7 @@ def index_post():
         filename = basename(fout.name)
 
     filename_csv = filename.replace('.json', '.csv')
-    # with open('/Users/ajr/Projects/CLLApi/cll/download/results.json', 'w') as fout:
-    #     json.dump(lemma, fout)
+
     return flask.render_template('index.html', languages=languages,
                                  current_language=language,
                                  text_data=text_data,
@@ -83,7 +83,7 @@ def download(filename: str):
                     csv_w.writerow(map(lambda x: elem.get(x, ""), columns))
                 return flask.send_file('download/' + filename)
 
-        return flask.render_template('index.html', languages=languages, 
+        return flask.render_template('index.html', languages=languages,
                                      error="Failed to send data!")
 
 
