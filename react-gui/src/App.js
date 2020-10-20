@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+/* GUI Elements */
 
+/* ResultsTable: Renders the resulting lemma */
 class ResultsTable extends React.Component {
   constructor(props) {
     super(props)
@@ -32,7 +34,7 @@ class ResultsTable extends React.Component {
   }
 }
 
-
+/* LanguageForm: Language chooser for supported languages */
 class LanguageForm extends React.Component {
   constructor(props) {
     super(props);
@@ -68,6 +70,7 @@ class LanguageForm extends React.Component {
 }
 
 
+/* Timer: Count down seconds during lemma fetch */
 class Timer extends React.Component {
   constructor(props) {
     super(props);
@@ -100,20 +103,8 @@ class Timer extends React.Component {
   }
 }
 
-const LanguageInput = function(props) {
-  let lang_items = [];
-  fetch('/api/get_languages').then(res => res.json()).then(data => {
-    for (const key in data) {
-      lang_items.push(
-      <label htmlFor={key} key={key}>
-      <input id={key} type="radio" name="language" value={key} />{data[key]}</label>);
-    }
-  });
-  return lang_items
-}
 
-
-
+/* Lemmatizer: main GUI logic for requesting text lemmatizion via simple REST api */
 class Lemmatizer extends React.Component {
   constructor(props) {
     super(props);
@@ -154,8 +145,6 @@ class Lemmatizer extends React.Component {
     });
   }
 
-  
-
   render() {
 
     const lang_items = []
@@ -164,7 +153,6 @@ class Lemmatizer extends React.Component {
         <label htmlFor={key} key={key}>
           <input id={key} type="radio" name="language" value={key} />{this.state.langs[key]}</label>);
     }
-
 
     return (
       <div>
