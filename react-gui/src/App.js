@@ -6,9 +6,7 @@ import './App.css';
 class ResultsTable extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      lemma: props.lemma
-    }
+    this.state = { lemma: props.lemma };
   }
 
   renderRow() {
@@ -33,6 +31,42 @@ class ResultsTable extends React.Component {
       </table> )
   }
 }
+
+
+class LanguageForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      value: "greek",
+      langs: [] };
+    this.handleChange = this.handleChange.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
+    fetch('/api/get_languages').then(res => res.json()).then(data => {
+      this.setState({ langs: data })
+    });
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value })
+    this.props.lemmatizer.setLang(event.target.value)
+  }
+
+  renderRow() {
+    return Object.keys(this.state.langs).map((key) => {
+      return (<option value={key}>{this.state.langs[key]}</option>)
+    });
+  }
+
+  render() {
+    return (
+      <select name="lang" value={this.state.value} id="lang-choice" onChange={this.handleChange}>
+        {this.renderRow()}
+      </select>
+    );
+  }
+
+}
+
 
 class Timer extends React.Component {
   constructor(props) {
@@ -102,6 +136,10 @@ class Lemmatizer extends React.Component {
     });
   }
 
+  setLang(lang) {
+    this.setState({ lang: lang });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     console.log("Submit event: ", this.state.text);
@@ -116,6 +154,8 @@ class Lemmatizer extends React.Component {
     });
   }
 
+  
+
   render() {
 
     const lang_items = []
@@ -125,6 +165,7 @@ class Lemmatizer extends React.Component {
           <input id={key} type="radio" name="language" value={key} />{this.state.langs[key]}</label>);
     }
 
+
     return (
       <div>
         <h1>Lemmatizer</h1>
@@ -133,7 +174,7 @@ class Lemmatizer extends React.Component {
             {this.state.text}
           </textarea>
           <div class="col" id="language_input">
-            <LanguageInput langs={this.state.langs}/>
+            <LanguageForm lemmatizer={this} />
           </div>
           <input type="submit" value="Submit" />
         </form>
