@@ -25,12 +25,15 @@ class ResultsTable extends React.Component {
   }
 
   render() {
-    return (
-      <table id="lemmaresult">
-        <tbody>
-          {this.renderRow()}
-        </tbody>
-      </table> )
+    if (this.props.lemma && this.props.lemma.length > 0)
+      return (
+        <table id="lemmaresult">
+          <tbody>
+            {this.renderRow()}
+         </tbody>
+       </table> );
+    else
+        return "No data!"
   }
 }
 
@@ -112,7 +115,6 @@ class Lemmatizer extends React.Component {
       text: "Ἐγένετο ἄνθρωπος, ἀπεσταλμένος παρὰ θεοῦ, ὄνομα αὐτῷ Ἰωάννης· οὗτος ἦλθεν εἰς μαρτυρίαν ἵνα μαρτυρήσῃ περὶ τοῦ φωτός, ἵνα πάντες πιστεύσωσιν δι᾿ αὐτοῦ.",
       lang: "greek",
       langs: undefined,
-      lemma: [],
       busy: false
     };
 
@@ -158,15 +160,19 @@ class Lemmatizer extends React.Component {
       <div>
         <h1>Lemmatizer</h1>
         <form action="/" onSubmit={this.handleSubmit}>
-          <textarea name="text" rows="15" onChange={this.handleChange}>
-            {this.state.text}
-          </textarea>
-          <div class="col" id="language_input">
-            <LanguageForm lemmatizer={this} />
+          <div className="row">
+            <textarea name="text" rows="15" onChange={this.handleChange}>
+              {this.state.text}
+            </textarea>
           </div>
-          <input type="submit" value="Submit" />
+          <div className="row">
+            <LanguageForm lemmatizer={this} />
+            <input type="submit" value="Submit" />
+          </div>
         </form>
-        {this.state.busy ? <Timer /> : <ResultsTable lemma={this.state.lemma} /> }
+        <div className="row">
+          {this.state.busy ? <Timer /> : <ResultsTable lemma={this.state.lemma} /> }
+        </div>
       </div>);
   }
 }
