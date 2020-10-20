@@ -38,8 +38,10 @@
 }
 
 table {
-  padding: 15%;
+  /* padding: 15%; */
   width: 100%;
+  padding-left: 15%;
+  padding-right: 15%;
 }
 
 textarea {

@@ -13,6 +13,69 @@ const LemmaRow = function(props) {
   );
 }
 
+class ResultsTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      lemma: props.lemma
+    }
+  }
+
+  renderRow() {
+    return this.props.lemma.map((row) => {
+      const {index, word, lemma} = row
+      return (
+        <tr key={index}>
+          <td>{index}</td>
+          <td>{word}</td>
+          <td>{lemma}</td>
+        </tr>
+      )
+    })
+  }
+
+  render() {
+    return (
+      <table id="lemmaresult">
+        <tbody>
+          {this.renderRow()}
+        </tbody>
+      </table> )
+  }
+}
+
+class Timer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time: Date.now(),
+      seconds: parseInt(props.startTimeInSeconds, 10) || 0
+    };
+  }
+
+  tick() {
+    this.setState(state => ({
+      seconds: state.seconds + 1
+    }));
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.setState(state => ({
+      seconds: state.seconds + 1
+    })), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render(){
+    return(
+      <div>{ this.state.seconds } </div>
+    );
+  }
+}
+
 const LanguageInput = function(props) {
   let lang_items = [];
   fetch('/api/get_languages').then(res => res.json()).then(data => {
@@ -25,6 +88,8 @@ const LanguageInput = function(props) {
   return lang_items
 }
 
+
+
 class Lemmatizer extends React.Component {
   constructor(props) {
     super(props);
@@ -32,13 +97,13 @@ class Lemmatizer extends React.Component {
       text: "Ἐγένετο ἄνθρωπος, ἀπεσταλμένος παρὰ θεοῦ, ὄνομα αὐτῷ Ἰωάννης· οὗτος ἦλθεν εἰς μαρτυρίαν ἵνα μαρτυρήσῃ περὶ τοῦ φωτός, ἵνα πάντες πιστεύσωσιν δι᾿ αὐτοῦ.",
       lang: "greek",
       langs: undefined,
-      lemma: []
+      lemma: [],
+      busy: false
     };
+    this.counter = 0
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-    
 
   }
 
@@ -56,8 +121,9 @@ class Lemmatizer extends React.Component {
       "Content-Language": this.state.lang,
       "Payload": this.state.text
     };
+    this.setState({busy: true});
     fetch('/api/lemma?q=' + JSON.stringify(query)).then(res => res.json()).then(data => {
-      this.setState({ lemma: data });
+      this.setState({ lemma: data, busy: false });
       // this.setState({
       //   lemma_formatted: data.map((item, index) =>
       //     <tr key={index}><td>{index}</td><td>{item.word}</td><td>{item.lemma}</td></tr>
@@ -75,7 +141,6 @@ class Lemmatizer extends React.Component {
           <input id={key} type="radio" name="language" value={key} />{this.state.langs[key]}</label>);
     }
 
-
     return (
       <div>
         <h1>Lemmatizer</h1>
@@ -88,13 +153,7 @@ class Lemmatizer extends React.Component {
           </div>
           <input type="submit" value="Submit" />
         </form>
-        <table>
-          <tbody>
-            {this.state.lemma.map((row) => {
-              return <LemmaRow key={row.index} lemma={row} />
-            })}
-          </tbody>
-        </table>
+        {this.state.busy ? <Timer /> : <ResultsTable lemma={this.state.lemma} /> }
       </div>);
   }
 }
