@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
 /* GUI Elements */
 
 /* ResultsTable: Renders the resulting lemma */
 class ResultsTable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { lemma: props.lemma };
-  }
-
   renderRow() {
     return this.props.lemma.map((row) => {
       const {index, word, lemma} = row
@@ -24,10 +18,21 @@ class ResultsTable extends React.Component {
     })
   }
 
+  renderHeader() {
+    return (
+      <tr>
+        <th>Index</th>
+        <th>Word</th>
+        <th>Lemma</th>
+      </tr>
+    )
+  }
+
   render() {
     if (this.props.lemma && this.props.lemma.length > 0)
       return (
         <table id="lemmaresult">
+          {this.renderHeader()}
           <tbody>
             {this.renderRow()}
          </tbody>
@@ -41,18 +46,14 @@ class ResultsTable extends React.Component {
 class LanguageForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      value: "greek",
-      langs: [] };
+    this.state = { langs: [] };
     this.handleChange = this.handleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
     fetch('/api/get_languages').then(res => res.json()).then(data => {
       this.setState({ langs: data })
     });
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value })
     this.props.lemmatizer.setLang(event.target.value)
   }
 
@@ -64,7 +65,7 @@ class LanguageForm extends React.Component {
 
   render() {
     return (
-      <select name="lang" value={this.state.value} id="lang-choice" onChange={this.handleChange}>
+      <select name="lang" value={this.props.lemmatizer.lang} id="lang-choice" onChange={this.handleChange}>
         {this.renderRow()}
       </select>
     );
