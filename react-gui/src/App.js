@@ -3,16 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
 
-const LemmaRow = function(props) {
-  var lemma = props.lemma;
-  return (
-    <tr><td>{lemma.index}</td>
-    <td>{lemma.word}</td>
-    <td>{lemma.lemma}</td>
-    </tr>
-  );
-}
-
 class ResultsTable extends React.Component {
   constructor(props) {
     super(props)
@@ -100,7 +90,6 @@ class Lemmatizer extends React.Component {
       lemma: [],
       busy: false
     };
-    this.counter = 0
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -124,11 +113,6 @@ class Lemmatizer extends React.Component {
     this.setState({busy: true});
     fetch('/api/lemma?q=' + JSON.stringify(query)).then(res => res.json()).then(data => {
       this.setState({ lemma: data, busy: false });
-      // this.setState({
-      //   lemma_formatted: data.map((item, index) =>
-      //     <tr key={index}><td>{index}</td><td>{item.word}</td><td>{item.lemma}</td></tr>
-      //   )
-      // });
     });
   }
 
@@ -166,19 +150,7 @@ function App() {
     "Content-Language": "greek",
     "Payload": "Ἐν ἀρχῇ ἦν ὁ λόγος"
   };
-  // setQuery();
   const element = <Lemmatizer />;
-
-  // const query = "Content-Type=text/plain&Content-Language=greek&Payload=Ἐν%20%ἀρχῇ%20%ἦν%20%ὁ%20%λόγος"
-  // "Content-Type": "text/plain",
-  // "Content-Language": "greek",
-  // "Payload": "Ἐν ἀρχῇ ἦν ὁ λόγος"
-  // console.log(query);
-  // useEffect(() => {
-  //   fetch('/api/get_languages').then(res => res.json()).then(data => {
-  //     this.setState({langs: data});
-  //   })
-  //  }, []);
 
   return (
     <div className="App">
